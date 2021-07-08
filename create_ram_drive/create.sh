@@ -62,6 +62,7 @@ size=$((size * 1024000))
 set +u
 mount_point="${2}"
 set -u
+
 if [ "${mount_point}" = "" ]; then
   mount_point="/mnt/ram_disk"
 fi
