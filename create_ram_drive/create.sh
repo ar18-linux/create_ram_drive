@@ -57,6 +57,8 @@ ar18.script.import ar18.script.version_check
 ar18.script.version_check
 
 size="${1}"
+# size is passed in GB, but brd needs KB
+size=$((size * 1024000))
 set +u
 mount_point="${2}"
 set -u
