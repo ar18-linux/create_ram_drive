@@ -52,6 +52,7 @@
 
 ar18.script.import ar18.script.install
 
+
 . "${script_dir}/vars"
 
 ar18.script.install "${install_dir}" "${module_name}" "${script_dir}"

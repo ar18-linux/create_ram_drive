@@ -56,6 +56,7 @@ ar18.script.import ar18.script.version_check
 
 ar18.script.version_check
 
+
 ar18.script.obtain_sudo_password
 
 ar18.script.execute_with_sudo modprobe brd rd_nr=1 rd_size=4585760 max_part=1
