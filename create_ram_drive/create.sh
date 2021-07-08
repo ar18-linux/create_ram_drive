@@ -56,10 +56,25 @@ ar18.script.import ar18.script.version_check
 
 ar18.script.version_check
 
+size="${1}"
+set +u
+mount_point="${2}"
+set -u
+if [ "${mount_point}" = "" ]; then
+  mount_point="/mnt/ram_disk"
+fi
 
 ar18.script.obtain_sudo_password
 
-ar18.script.execute_with_sudo modprobe brd rd_nr=1 rd_size=4585760 max_part=1
+ar18.script.execute_with_sudo modprobe brd rd_nr=1 rd_size="${size}" max_part=1
+
+set +e
+echo 'type=83' | ar18.script.execute_with_sudo sfdisk "/dev/ram0"
+set -e
+ar18.script.execute_with_sudo mkfs.ext4 "/dev/ram0"
+
+ar18.script.execute_with_sudo mkdir -p "${mount_point}"
+ar18.script.execute_with_sudo mount "/dev/ram0" "${mount_point}"
 
 ##################################SCRIPT_END###################################
 # Restore environment
