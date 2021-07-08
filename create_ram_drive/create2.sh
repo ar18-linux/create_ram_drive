@@ -69,6 +69,7 @@ if [ "${mount_point}" = "" ]; then
   mount_point="/mnt/ram_disk"
 fi
 
+ar18.script.execute_with_sudo umount -f "${mount_point}"
 ar18.script.execute_with_sudo rm -rf "${mount_point}"
 ar18.script.execute_with_sudo mkdir "${mount_point}"
 ar18.script.execute_with_sudo mount -t tmpfs tmpfs "${mount_point}"
