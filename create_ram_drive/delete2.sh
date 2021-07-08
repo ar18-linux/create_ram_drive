@@ -53,6 +53,7 @@
 losetup -d /dev/loop0
 rm /ramdisks/disk0
 
+
 ##################################SCRIPT_END###################################
 # Restore environment
 {
