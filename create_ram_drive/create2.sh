@@ -69,12 +69,13 @@ if [ "${mount_point}" = "" ]; then
   mount_point="/mnt/ram_disk"
 fi
 
-
+ar18.script.execute_with_sudo rm -rf "${mount_point}"
 ar18.script.execute_with_sudo mkdir "${mount_point}"
 ar18.script.execute_with_sudo mount -t tmpfs tmpfs "${mount_point}"
-dd if=/dev/zero of="${mount_point}/disk0" bs=1M count="${size}"
-losetup /dev/loop0 "${mount_point}/disk0"
-mke2fs /dev/loop0
+ar18.script.execute_with_sudo dd if=/dev/zero of="${mount_point}/disk0" bs=1M count="${size}"
+ar18.script.execute_with_sudo losetup /dev/loop0 "${mount_point}/disk0"
+ar18.script.execute_with_sudo mke2fs /dev/loop0
+ar18.script.execute_with_sudo chmod 777 -R "${mount_point}"
 
 ##################################SCRIPT_END###################################
 # Restore environment
