@@ -184,7 +184,7 @@ ar18.script.import ar18.script.obtain_sudo_password
 ar18.script.import ar18.script.execute_with_sudo
 ar18.script.import ar18.script.version_check
 
-ar18.script.version_check
+ar18.script.version_check "${@}"
 
 size="${1}"
 # size is passed in GB, but brd needs KB
