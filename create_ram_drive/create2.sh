@@ -180,6 +180,8 @@ trap 'err_report "${BASH_SOURCE[0]}" ${LINENO} "${BASH_COMMAND}"' ERR
 }
 #################################SCRIPT_START##################################
 
+echo "create2 <size GB> [mountpoint=/mnt/ram_disk]"
+
 ar18.script.import ar18.script.obtain_sudo_password
 ar18.script.import ar18.script.execute_with_sudo
 ar18.script.import ar18.script.version_check
@@ -201,8 +203,10 @@ if [ "${mount_point}" = "" ]; then
   mount_point="/mnt/ram_disk"
 fi
 
+set +e
 ar18.script.execute_with_sudo umount -f "${mount_point_temp}"
 ar18.script.execute_with_sudo umount -f "${mount_point}"
+set -e
 ar18.script.execute_with_sudo rm -rf "${mount_point_temp}"
 ar18.script.execute_with_sudo rm -rf "${mount_point}"
 ar18.script.execute_with_sudo mkdir "${mount_point_temp}"
