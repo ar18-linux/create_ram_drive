@@ -202,21 +202,31 @@ mount_point_temp="/mnt/ram_disk_file"
 if [ "${mount_point}" = "" ]; then
   mount_point="/mnt/ram_disk"
 fi
-
-set +e
-ar18.script.execute_with_sudo umount -f "${mount_point_temp}"
-ar18.script.execute_with_sudo umount -f "${mount_point}"
-set -e
+loop_no="12345"
+#set +e
+#ar18.script.execute_with_sudo umount -f "/dev/loop0"
+if mountpoint -q "${mount_point}"; then
+  ar18.script.execute_with_sudo umount -lf "${mount_point}"
+  #ar18.script.execute_with_sudo umount -f "${mount_point}"
+fi
+if mountpoint -q "${mount_point_temp}"; then
+  ar18.script.execute_with_sudo umount -lf "${mount_point_temp}"
+  #ar18.script.execute_with_sudo umount -f "${mount_point_temp}"
+fi
+#set -e
+if losetup -a | grep "/dev/loop${loop_no}"; then
+  ar18.script.execute_with_sudo losetup -d "/dev/loop${loop_no}"
+fi
 ar18.script.execute_with_sudo rm -rf "${mount_point_temp}"
 ar18.script.execute_with_sudo rm -rf "${mount_point}"
 ar18.script.execute_with_sudo mkdir "${mount_point_temp}"
 ar18.script.execute_with_sudo mkdir "${mount_point}"
-ar18.script.execute_with_sudo mount -o size="${size}GB"  -t tmpfs tmpfs "${mount_point_temp}"
-echo "Preparing ram disk..."
-ar18.script.execute_with_sudo dd if=/dev/zero of="${mount_point_temp}/disk0" bs=1M count="${size}"
-ar18.script.execute_with_sudo losetup /dev/loop0 "${mount_point_temp}/disk0"
-ar18.script.execute_with_sudo mke2fs /dev/loop0
-ar18.script.execute_with_sudo mount "/dev/loop0" "${mount_point}"
+ar18.script.execute_with_sudo mount -o size="${size}M"  -t tmpfs tmpfs "${mount_point_temp}"
+echo "Preparing ram disk... (${size}MB)"
+ar18.script.execute_with_sudo dd if="/dev/zero" of="${mount_point_temp}/disk0" bs=1M count="${size}" status=progress
+ar18.script.execute_with_sudo losetup "/dev/loop${loop_no}" "${mount_point_temp}/disk0"
+ar18.script.execute_with_sudo mke2fs "/dev/loop${loop_no}"
+ar18.script.execute_with_sudo mount "/dev/loop${loop_no}" "${mount_point}"
 ar18.script.execute_with_sudo chmod 777 -R "${mount_point}"
 
 ##################################SCRIPT_END###################################
